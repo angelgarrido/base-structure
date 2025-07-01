@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+.sst/
+**/dist/
+**/build/
+
+# Generated files
+**/*.min.js
+**/*.bundle.js
+**/coverage/
+**/.turbo/
+
+# TypeScript project references (heavy processing)
+packages/*/dist/
+apps/*/dist/
+
+# Test files (optional - remove if you want Biome to check tests)
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Migration files
+packages/core/migrations/
+
+# Generated types
+**/*.d.ts
+!**/sst-env.d.ts 
