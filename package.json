@@ -20,7 +20,7 @@
     "lint:fix": "biome check --apply .",
     "format": "biome format .",
     "format:fix": "biome format --write .",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --build --noEmit",
     "deps:graph": "madge --image deps-graph.svg --extensions ts,tsx,js,jsx .",
     "deps:circular": "madge --circular --extensions ts,tsx,js,jsx .",
     "deps:json": "madge --json --extensions ts,tsx,js,jsx . > deps-graph.json"

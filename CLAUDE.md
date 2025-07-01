@@ -190,7 +190,7 @@ import { formatDate } from '@base-structure/shared/utils/date';
 
 #### 2. Avoid Circular Dependencies
 
-```text
+```
 ✅ Good Flow:
 packages/shared ← apps/backend-api
                ← apps/frontend

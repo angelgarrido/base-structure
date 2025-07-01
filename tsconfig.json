@@ -6,7 +6,6 @@
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
     "noUnusedLocals": true,
@@ -17,7 +16,18 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "exclude": ["node_modules", "dist", "build", ".sst", "**/*.test.ts", "**/*.spec.ts"],
+  "include": [],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".sst",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.d.ts",
+    "apps/**/*",
+    "packages/**/*"
+  ],
   "references": [
     { "path": "./apps/frontend" },
     { "path": "./apps/backend-api" },

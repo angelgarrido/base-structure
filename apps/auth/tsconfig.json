@@ -3,7 +3,8 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "composite": true,
+    "composite": false,
+    "lib": ["ES2022"],
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
