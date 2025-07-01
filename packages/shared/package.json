@@ -1,0 +1,17 @@
+{
+  "name": "@base-structure/shared",
+  "version": "0.0.0",
+  "type": "module",
+  "author": "Angel Garrido <angel@angelgarrido.es>",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}

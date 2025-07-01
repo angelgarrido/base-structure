@@ -1,0 +1,42 @@
+{
+  "name": "base-structure",
+  "version": "1.0.0",
+  "author": "Angel Garrido <angel@angelgarrido.es>",
+  "license": "UNLICENSED",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "domains/*"
+  ],
+  "scripts": {
+    "dev": "npx sst dev",
+    "sso": "aws sso login --sso-session=neurobrew",
+    "db": "TS_NODE_PROJECT=tsconfig.drizzle.json npx sst shell drizzle-kit",
+    "db:generate": "TS_NODE_PROJECT=tsconfig.drizzle.json npx sst shell drizzle-kit generate",
+    "db:migrate": "TS_NODE_PROJECT=tsconfig.drizzle.json npx sst shell drizzle-kit migrate",
+    "db:studio": "TS_NODE_PROJECT=tsconfig.drizzle.json npx sst shell drizzle-kit studio",
+    "lint": "biome check .",
+    "lint:fix": "biome check --apply .",
+    "format": "biome format .",
+    "format:fix": "biome format --write .",
+    "type-check": "tsc --noEmit",
+    "deps:graph": "madge --image deps-graph.svg --extensions ts,tsx,js,jsx .",
+    "deps:circular": "madge --circular --extensions ts,tsx,js,jsx .",
+    "deps:json": "madge --json --extensions ts,tsx,js,jsx . > deps-graph.json"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.0.5",
+    "@tsconfig/node22": "^22",
+    "typescript": "^5",
+    "ts-node": "^10.9.2",
+    "madge": "^7.0.0"
+  },
+  "dependencies": {
+    "sst": "3.17.6",
+    "drizzle-kit": "^0.31.2",
+    "drizzle-orm": "^0.44.2",
+    "winston": "^3.17.0",
+    "zod": "^3.25.67"
+  }
+}

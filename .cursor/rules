@@ -1,0 +1,306 @@
+# Cursor AI Rules for Base Structure Project
+
+## Table of Contents
+
+1. [TypeScript Configuration](#typescript-configuration)
+2. [Import Patterns](#import-patterns)
+3. [Dependency Management](#dependency-management)
+4. [Code Organization](#code-organization)
+5. [Performance Guidelines](#performance-guidelines)
+6. [Development Workflow](#development-workflow)
+7. [Error Prevention](#error-prevention)
+8. [Code Quality](#code-quality)
+
+---
+
+## TypeScript Configuration
+
+### Root tsconfig.json Rules
+
+- **NEVER** add "paths" to root tsconfig.json - use project references only
+- **ALWAYS** use "references" array for monorepo packages
+- **ALWAYS** set "composite": true in referenced projects
+- **NEVER** use "noEmit": true in referenced projects
+
+### Module Resolution Rules
+
+- **Frontend/Shared**: Use "moduleResolution": "bundler" + "module": "ESNext"
+- **Node.js Apps**: Use "moduleResolution": "NodeNext" + "module": "NodeNext"
+- **Consistency**: Match module and moduleResolution settings
+
+### Project-Specific Configuration
+
+```typescript
+// Node.js apps (backend-api, auth)
+{
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "composite": true
+  }
+}
+
+// Frontend apps
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "composite": true,
+    "jsx": "react-jsx"
+  }
+}
+
+// Shared packages
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "composite": true
+  }
+}
+```
+
+---
+
+## Import Patterns
+
+### Node.js ESM Imports (apps/backend-api, apps/auth)
+
+```typescript
+// ✅ ALWAYS use .js extensions for relative imports
+import { subjects } from './subjects.js';
+import { api } from './api.js';
+
+// ✅ Package imports don't need extensions
+import { Hono } from 'hono';
+import { ApiResponse } from '@base-structure/shared';
+
+// ❌ NEVER omit extensions in Node.js ESM
+import { subjects } from './subjects'; // Wrong!
+```
+
+### Frontend Imports (apps/frontend)
+
+```typescript
+// ✅ CAN use .ts/.tsx extensions (bundler handles it)
+import { Component } from './Component.tsx';
+import { utils } from './utils.ts';
+
+// ✅ Package imports
+import { ApiResponse } from '@base-structure/shared';
+```
+
+### Cross-Package Imports
+
+```typescript
+// ✅ ALWAYS use package names
+import { x } from '@base-structure/shared';
+
+// ❌ NEVER use relative paths across packages
+import { x } from '../../packages/shared/src/x'; // Wrong!
+```
+
+### Import Order (Biome Enforced)
+
+1. Third-party imports (alphabetical)
+2. Empty line
+3. Internal package imports
+4. Empty line
+5. Relative imports (alphabetical)
+
+---
+
+## Dependency Management
+
+### Package.json Dependencies
+
+```json
+{
+  "dependencies": {
+    "@base-structure/shared": "*",    // ✅ Workspace packages
+    "hono": "^4.6.18"                // ✅ External packages
+  }
+}
+```
+
+### Circular Dependency Prevention
+
+- **Shared packages** MUST NOT import from apps
+- **Apps** CAN import from shared packages
+- **Domains** CAN import from shared packages
+- **Regular checks**: Run `npm run deps:circular`
+
+### Dependency Flow Rules
+
+```text
+✅ Good Flow:
+packages/shared ← apps/backend-api
+               ← apps/frontend
+               ← apps/auth
+
+❌ Bad Flow:
+packages/shared → apps/backend-api (circular!)
+```
+
+---
+
+## Code Organization
+
+### Directory Structure Rules
+
+- **Domain logic**: `domains/` directory
+- **Infrastructure**: `infra/` directory
+- **Shared utilities**: `packages/shared/`
+- **App-specific code**: `apps/` directories
+
+### Barrel File Strategy
+
+```typescript
+// ✅ Main barrel (packages/shared/src/index.ts)
+export * from './types';
+export * from './utils';
+export * from './schemas';
+
+// ✅ Feature barrels
+// types/index.ts, utils/index.ts, schemas/index.ts
+
+// ❌ Don't export internal modules
+// export * from './internal/private-stuff'; // Wrong!
+```
+
+### Import Preferences (Priority Order)
+
+1. **Direct imports** (best tree-shaking): `'@base-structure/shared/utils/date'`
+2. **Feature barrel**: `'@base-structure/shared/schemas'`
+3. **Main barrel**: `'@base-structure/shared'`
+
+---
+
+## Performance Guidelines
+
+### TypeScript Performance
+
+- **ALWAYS** use `skipLibCheck: true`
+- **ALWAYS** use `isolatedModules: true`
+- **ALWAYS** use project references for incremental builds
+- **EXCLUDE** build artifacts: `["node_modules", "dist", "build", ".sst"]`
+
+### IDE Performance
+
+- **Exclude from search**: node_modules, dist, build, .sst
+- **Local paths only**: Use paths only within packages, not across
+- **Avoid deep nesting**: Keep barrel files shallow
+- **Regular monitoring**: Check for circular dependencies
+
+### Import Optimization
+
+- **Prefer direct imports** for better tree-shaking
+- **Use barrel files strategically** (not everything)
+- **Avoid importing entire packages** when using one function
+
+---
+
+## Development Workflow
+
+### Pre-Commit Checklist
+
+1. `npm run type-check` - Verify TypeScript
+2. `npm run lint:fix` - Fix formatting issues
+3. `npm run deps:circular` - Check circular dependencies
+4. Verify import extensions match context (Node.js vs bundler)
+
+### Adding New Packages
+
+1. Create package directory in appropriate location
+2. Add `tsconfig.json` with `composite: true`
+3. Add to root `tsconfig.json` references
+4. Declare dependencies in `package.json`
+5. Create barrel file if needed
+6. Run `npm run deps:circular` to verify no cycles
+
+### Adding New Dependencies
+
+- **Add to specific package**, not root (unless dev tool)
+- **Use workspace dependencies** for internal packages
+- **Update tsconfig paths** only for local imports within package
+- **Test imports** work correctly after changes
+
+---
+
+## Error Prevention
+
+### Common Mistakes to Avoid
+
+- ❌ Adding paths to root tsconfig.json
+- ❌ Omitting .js extensions in Node.js ESM
+- ❌ Creating circular dependencies
+- ❌ Using relative imports across packages
+- ❌ Mixing module resolution strategies
+- ❌ Forgetting `composite: true` in referenced projects
+
+### When Making Changes
+
+- **Impact assessment**: Check effect on other packages
+- **Import verification**: Ensure imports still resolve
+- **Dependency analysis**: Run after major changes
+- **Barrel updates**: Update when adding new exports
+
+### Troubleshooting Guide
+
+1. **"Cannot resolve module"** → Check file extensions for Node.js ESM
+2. **"Circular dependency detected"** → Run `npm run deps:circular`
+3. **"Project must have composite: true"** → Add to referenced tsconfig
+4. **Slow IDE performance** → Check for circular deps and path mappings
+
+---
+
+## Code Quality
+
+### TypeScript Strictness
+
+- **Use strict mode** in all projects
+- **Prefer explicit types** over `any`
+- **Use proper return types** for functions
+- **Leverage TypeScript's type system** fully
+
+### Import Hygiene
+
+- **Remove unused imports** (Biome enforced)
+- **Use consistent import styles** within files
+- **Prefer named imports** over default imports
+- **Group related imports** together
+
+### Best Practices
+
+- **Single responsibility**: Each file should have clear purpose
+- **Clear naming**: Use descriptive names for files and exports
+- **Documentation**: Add JSDoc for complex functions
+- **Type safety**: Avoid `any`, use proper types
+
+---
+
+## Quick Reference
+
+### File Extensions by Context
+
+- **Node.js ESM**: Use `.js` for relative imports
+- **Frontend bundler**: Can use `.ts/.tsx` for relative imports
+- **Package imports**: No extensions needed
+
+### Module Resolution by Project
+
+- **apps/frontend**: `"bundler"`
+- **apps/backend-api**: `"NodeNext"`
+- **apps/auth**: `"NodeNext"`
+- **packages/shared**: `"bundler"`
+
+### Dependency Commands
+
+```bash
+npm run deps:circular    # Check circular dependencies
+npm run deps:graph      # Generate visual graph
+npm run type-check      # TypeScript validation
+npm run lint:fix        # Auto-fix formatting
+```
