@@ -20,7 +20,7 @@
     "lint:fix": "biome check --apply .",
     "format": "biome format .",
     "format:fix": "biome format --write .",
-    "type-check": "tsc --build --noEmit",
+    "type-check": "tsc --build",
     "deps:graph": "madge --image deps-graph.svg --extensions ts,tsx,js,jsx .",
     "deps:circular": "madge --circular --extensions ts,tsx,js,jsx .",
     "deps:json": "madge --json --extensions ts,tsx,js,jsx . > deps-graph.json"
@@ -28,14 +28,14 @@
   "devDependencies": {
     "@biomejs/biome": "2.0.5",
     "@tsconfig/node22": "^22",
-    "typescript": "^5",
+    "madge": "^7.0.0",
     "ts-node": "^10.9.2",
-    "madge": "^7.0.0"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "sst": "3.17.6",
     "drizzle-kit": "^0.31.2",
     "drizzle-orm": "^0.44.2",
+    "sst": "3.17.6",
     "winston": "^3.17.0",
     "zod": "^3.25.67"
   }

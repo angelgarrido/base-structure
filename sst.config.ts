@@ -23,9 +23,9 @@ export default $config({
     }
   },
   async run() {
-    const auth = await import("./infra/auth");
-    const api = await import("./infra/api");
-    const frontend = await import("./infra/frontend");
+    const database = await import('./infra/database')
+    const api = await import('./infra/api')
+    const frontend = await import('./infra/frontend')
     return {
       frontend: frontend.web.url,
     }

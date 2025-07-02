@@ -1,5 +1,5 @@
 {
-  "name": "@base-structure/shared",
+  "name": "@base-structure/config",
   "version": "0.0.0",
   "type": "module",
   "author": "Angel Garrido <angel@angelgarrido.es>",
@@ -9,10 +9,13 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@base-structure/shared": "workspace:*",
     "zod": "^3.25.67"
   },
   "devDependencies": {
     "typescript": "^5.8.3",
     "@types/node": "^22"
-  }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts"
 }

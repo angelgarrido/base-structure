@@ -1,5 +1,5 @@
 {
-  "name": "@base-structure/shared",
+  "name": "@base-structure/events",
   "version": "0.0.0",
   "type": "module",
   "author": "Angel Garrido <angel@angelgarrido.es>",
@@ -9,6 +9,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@base-structure/shared": "workspace:*",
+    "@base-structure/config": "workspace:*",
     "zod": "^3.25.67"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 {
-  "name": "@base-structure/shared",
+  "name": "@base-structure/auth",
   "version": "0.0.0",
   "type": "module",
   "author": "Angel Garrido <angel@angelgarrido.es>",
@@ -9,10 +9,13 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@base-structure/shared": "workspace:*",
+    "@base-structure/config": "workspace:*",
+    "@base-structure/database": "workspace:*",
+    "@openauthjs/openauth": "^0.4.3",
     "zod": "^3.25.67"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
-    "@types/node": "^22"
+    "typescript": "^5.8.3"
   }
 }

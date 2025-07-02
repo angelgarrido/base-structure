@@ -31,7 +31,6 @@
   "references": [
     { "path": "./apps/frontend" },
     { "path": "./apps/backend-api" },
-    { "path": "./apps/auth" },
     { "path": "./packages/shared" }
   ]
 }

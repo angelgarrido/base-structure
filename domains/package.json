@@ -1,6 +1,6 @@
 {
-  "name": "@base-structure/shared",
-  "version": "0.0.0",
+  "name": "@base-structure/domains",
+  "version": "0.0.1",
   "type": "module",
   "author": "Angel Garrido <angel@angelgarrido.es>",
   "license": "UNLICENSED",
@@ -12,7 +12,6 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
-    "@types/node": "^22"
+    "typescript": "^5.8.3"
   }
 }

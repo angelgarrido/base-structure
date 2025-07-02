@@ -5,13 +5,23 @@
 
 declare module "sst" {
   export interface Resource {
+    "DatabaseVPC": {
+      "type": "sst.aws.Vpc"
+    }
+    "DbRel": {
+      "clusterArn": string
+      "database": string
+      "host": string
+      "password": string
+      "port": number
+      "reader": string
+      "secretArn": string
+      "type": "sst.aws.Aurora"
+      "username": string
+    }
     "MyApi": {
       "name": string
       "type": "sst.aws.Function"
-      "url": string
-    }
-    "MyAuth": {
-      "type": "sst.aws.Auth"
       "url": string
     }
     "MyWeb": {

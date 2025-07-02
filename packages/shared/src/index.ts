@@ -1,5 +1,6 @@
 // Common types and utilities
 
-export * from './schemas'
-export * from './types'
-export * from './utils'
+export * from './schemas.js'
+export * from './types.js'
+export * from './utils.js'
+

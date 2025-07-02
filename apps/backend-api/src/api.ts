@@ -1,13 +1,12 @@
 import { createClient } from '@openauthjs/openauth/client'
 import { Hono } from 'hono'
 import { handle } from 'hono/aws-lambda'
-import { Resource } from 'sst'
 
 import { subjects } from './subjects.js'
 
 const client = createClient({
   clientID: 'jwt-api',
-  issuer: Resource.MyAuth.url,
+  issuer: 'test',
 })
 
 async function getUserInfo(userId: string) {

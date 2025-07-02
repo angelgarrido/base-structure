@@ -73,7 +73,6 @@ base-structure/
     { "path": "./packages/shared" },
     { "path": "./apps/frontend" },
     { "path": "./apps/backend-api" },
-    { "path": "./apps/auth" }
   ]
 }
 ```
@@ -93,7 +92,7 @@ base-structure/
       "@/*": ["./src/*"]  // Only local paths
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "*.ts"],
   "exclude": ["node_modules", "dist"]
 }
 ```
@@ -132,7 +131,7 @@ base-structure/
     "composite": true,
     "strict": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "*.ts"],
   "exclude": ["node_modules", "dist"]
 }
 ```
