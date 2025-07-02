@@ -74,6 +74,7 @@ lib-cov/
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+sst-env.d.ts
 
 # Package manager files
 .yarn/cache

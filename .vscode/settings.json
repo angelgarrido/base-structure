@@ -24,7 +24,9 @@
 
   // === File Associations ===
   "files.associations": {
-    "*.sst": "typescript"
+    "*.sst": "typescript",
+    "tsconfig.json": "json",
+    "tsconfig.*.json": "json"
   },
 
   // === Search & Performance ===

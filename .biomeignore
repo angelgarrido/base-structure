@@ -31,4 +31,7 @@ packages/core/migrations/
 
 # Generated types
 **/*.d.ts
-!**/sst-env.d.ts 
+sst-env.d.ts
+
+*.json
+**/*.json
