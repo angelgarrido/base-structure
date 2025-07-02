@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto'
+import { randomUUID } from 'node:crypto'
 import type { BaseEvent, EventBus, EventHandler } from './types.js'
 
 // Simple in-memory event bus implementation

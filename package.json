@@ -17,7 +17,7 @@
     "db:migrate": "TS_NODE_PROJECT=tsconfig.drizzle.json npx sst shell drizzle-kit migrate",
     "db:studio": "TS_NODE_PROJECT=tsconfig.drizzle.json npx sst shell drizzle-kit studio",
     "lint": "biome check . --max-diagnostics=1000",
-    "lint:fix": "biome check --apply . --max-diagnostics=1000",
+    "lint:fix": "biome check . --write --max-diagnostics=1000",
     "format": "biome format . --max-diagnostics=1000",
     "format:fix": "biome format --write . --max-diagnostics=1000",
     "type-check": "tsc --build",

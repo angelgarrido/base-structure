@@ -16,9 +16,9 @@ export function getAuthClient() {
   return authClient
 }
 
-export async function verifyToken(token: string): Promise<UserSession | null> {
+export async function verifyToken(_token: string): Promise<UserSession | null> {
   try {
-    const client = getAuthClient()
+    const _client = getAuthClient()
     // This is a placeholder - you'd implement actual token verification
     // const verified = await client.verify(token);
     // return UserSessionSchema.parse(verified.payload);
@@ -29,9 +29,9 @@ export async function verifyToken(token: string): Promise<UserSession | null> {
   }
 }
 
-export async function createToken(userSession: UserSession): Promise<string> {
+export async function createToken(_userSession: UserSession): Promise<string> {
   try {
-    const client = getAuthClient()
+    const _client = getAuthClient()
     // This is a placeholder - you'd implement actual token creation
     // return await client.sign(userSession);
     return 'placeholder-token'

@@ -51,6 +51,7 @@
       "trailingCommas": "all"
     }
   },
+
   "css": {
     "parser": {
       "cssModules": true

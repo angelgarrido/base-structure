@@ -1,4 +1,4 @@
-import { ConfigSchema, type Config } from './types.js'
+import { type Config, ConfigSchema } from './types.js'
 
 /**
  * Load configuration from environment variables

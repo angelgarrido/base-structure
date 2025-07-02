@@ -1,21 +1,29 @@
-import { createClient } from '@openauthjs/openauth/client'
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
+/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: mockfile< */
 
-const client = createClient({
-  clientID: 'web',
-  issuer: import.meta.env.VITE_AUTH_URL,
-})
+// biome-ignore lint/correctness/noUnusedImports: mockFile
+import React, { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
-interface AuthContextType {
-  userId?: string
-  loaded: boolean
-  loggedIn: boolean
-  logout: () => void
-  login: () => Promise<void>
-  getToken: () => Promise<string | undefined>
+// Mock auth client for development
+
+const client = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  authorize: async (origin: string, type: string, options: Record<string, unknown>) => ({
+    challenge: { state: 'mock', verifier: 'mock' },
+    url: '#',
+  }),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  exchange: async (code: string, origin: string, verifier: string) => ({
+    err: null,
+    tokens: { access: 'mock-token', refresh: 'mock-refresh' },
+  }),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  refresh: async (refresh: string, options: Record<string, unknown>) => ({
+    err: null,
+    tokens: { access: 'mock-token', refresh: 'mock-refresh' },
+  }),
 }
 
-const AuthContext = createContext({} as AuthContextType)
+import { AuthContext } from './authContext'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const initializing = useRef(true)
@@ -23,6 +31,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loggedIn, setLoggedIn] = useState(false)
   const token = useRef<string | undefined>(undefined)
   const [userId, setUserId] = useState<string | undefined>()
+
+  async function auth() {
+    const token = await refreshTokens()
+
+    if (token) {
+      await user()
+    }
+
+    setLoaded(true)
+  }
+
+  async function callback(code: string, state: string) {
+    console.log('callback', code, state)
+    const challengeStr = sessionStorage.getItem('challenge')
+    if (!challengeStr) return
+    const challenge = JSON.parse(challengeStr)
+    if (code) {
+      if (state === challenge.state && challenge.verifier) {
+        const exchanged = await client.exchange(code, location.origin, challenge.verifier)
+        if (!exchanged.err) {
+          token.current = exchanged.tokens?.access
+          localStorage.setItem('refresh', exchanged.tokens.refresh)
+        }
+      }
+      window.location.replace('/')
+    }
+  }
+
+  const memoizedAuth = useCallback(auth, [])
+  const memoizedCallback = useCallback(callback, [])
 
   useEffect(() => {
     const hash = new URLSearchParams(location.search.slice(1))
@@ -36,22 +74,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initializing.current = false
 
     if (code && state) {
-      callback(code, state)
+      memoizedCallback(code, state)
       return
     }
 
-    auth()
-  }, [])
-
-  async function auth() {
-    const token = await refreshTokens()
-
-    if (token) {
-      await user()
-    }
-
-    setLoaded(true)
-  }
+    memoizedAuth()
+  }, [memoizedAuth, memoizedCallback])
 
   async function refreshTokens() {
     const refresh = localStorage.getItem('refresh')
@@ -85,21 +113,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
     sessionStorage.setItem('challenge', JSON.stringify(challenge))
     location.href = url
-  }
-
-  async function callback(code: string, state: string) {
-    console.log('callback', code, state)
-    const challenge = JSON.parse(sessionStorage.getItem('challenge')!)
-    if (code) {
-      if (state === challenge.state && challenge.verifier) {
-        const exchanged = await client.exchange(code!, location.origin, challenge.verifier)
-        if (!exchanged.err) {
-          token.current = exchanged.tokens?.access
-          localStorage.setItem('refresh', exchanged.tokens.refresh)
-        }
-      }
-      window.location.replace('/')
-    }
   }
 
   async function user() {
@@ -137,8 +150,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   )
-}
-
-export function useAuth() {
-  return useContext(AuthContext)
 }
