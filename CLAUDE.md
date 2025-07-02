@@ -113,7 +113,7 @@ base-structure/
       "@/*": ["./src/*"]  // Only local paths
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "*.ts"]
 }
 ```
 

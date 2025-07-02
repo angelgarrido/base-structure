@@ -31,6 +31,11 @@
   "references": [
     { "path": "./apps/frontend" },
     { "path": "./apps/backend-api" },
-    { "path": "./packages/shared" }
+    { "path": "./packages/shared" },
+    { "path": "./packages/auth" },
+    { "path": "./packages/config" },
+    { "path": "./packages/database" },
+    { "path": "./packages/events" },
+    { "path": "./packages/ui" }
   ]
 }

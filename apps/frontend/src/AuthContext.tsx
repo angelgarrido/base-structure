@@ -110,8 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
 
     if (res.ok) {
-      const user: string = 3
-
+      const user = await res.json()
       setUserId(user.userId)
       setLoggedIn(true)
     }
